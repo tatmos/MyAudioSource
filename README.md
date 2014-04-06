@@ -14,7 +14,7 @@ clip指定された場合、clip名のキューとして扱われます。<br>
 キューシートは１つ。<br>
 キュシートの呼び分けはしない。<br>
 <br>
-auido.Play()とか書いている場合は、
+auido.Play()とか書いている場合は、<br>
 public MyAudioSource audioSource;<br>
 void Start () {<br>
 		audioSource = gameObject.AddComponent<MyAudioSource>();<br>
