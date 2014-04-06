@@ -45,7 +45,7 @@ public class MyAudioSource : CriAtomSource
 	{
 		get
 		{
-			return this.time / 44100.0f;
+			return this.time / 1000.0f * 44100f;
 		}
 	}
 	#endif		
