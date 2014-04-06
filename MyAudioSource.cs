@@ -4,7 +4,13 @@ using System.Collections;
 public class MyAudioSource : MonoBehaviour
 {	
 	private AudioSource _Mysource;
-
+	public void Awake()
+	{
+		if(_Mysource == null){
+			_Mysource = gameObject.AddComponent<AudioSource>();			
+			source.rolloffMode = AudioRolloffMode.Linear;	//3Dポジション時に音が小さくなるのを軽減
+		}
+	}	
 	public AudioSource source 
 	{
 		get
@@ -13,10 +19,8 @@ public class MyAudioSource : MonoBehaviour
 		}
 	}	
 	public AudioClip clip{
-		set
-		{
-			_Mysource.clip = value;
-		}
+		get{return _Mysource.clip;}
+		set{_Mysource.clip = value;}
 	}
 	public bool isPlaying
 	{
@@ -32,38 +36,64 @@ public class MyAudioSource : MonoBehaviour
 			return _Mysource.timeSamples;
 		}
 	}
+	public float pitch
+	{
+		get
+		{
+			return  _Mysource.pitch;
+		}
+		set
+		{
+			_Mysource.pitch = value;
+		}
+	}
 	public void Play()
 	{
 		_Mysource.Play();
 	}
-	public void Awake()
+	public void Stop()
 	{
-		if(_Mysource == null){
-			_Mysource = gameObject.AddComponent<AudioSource>();			
-			source.rolloffMode = AudioRolloffMode.Linear;	//3Dポジション時に音が小さくなるのを軽減
-		}
-	}	
+		_Mysource.Stop();
+	}
+	public bool loop
+	{
+		get{return _Mysource.loop;}
+		set{ _Mysource.loop = value;}
+	}
+	
 }
 #else
-public class MyAudioSource : CriAtomSource
+public class MyAudioSource : MonoBehaviour
 	{	
+		private CriAtomSource _Mysource;
+		public void Awake()
+		{
+			if(_Mysource == null){
+				_Mysource = gameObject.AddComponent<CriAtomSource>();			
+			}
+		}	
 		public CriAtomSource source { 
 			get
 			{
-				return this;
+				return _Mysource;
 			}
 		}
 		public AudioClip clip{
 			set
 			{
-				this.cueName = value.name;
+				_Mysource.cueName = value.name;
 			}
+			//#if UNITY_WEBPLAYER
+			//	if(audioSource.clip.name != clip.name) 
+			//#else
+			//	if(audioSource.cueName != clip.name) 
+			//#endif
 		}
 		public bool isPlaying
 		{
 			get
 			{
-				if(this.status == Status.Playing)return true;
+				if(_Mysource.status == CriAtomSource.Status.Playing)return true;
 				return false;
 			}
 		}
@@ -71,8 +101,37 @@ public class MyAudioSource : CriAtomSource
 		{
 			get
 			{
-				return this.time / 1000.0f * 44100f;
+				return _Mysource.time / 1000.0f * 44100f;
 			}
+		}
+		public float pitch
+		{
+			get
+			{
+				return  Mathf.Pow(2,_Mysource.pitch/1200.0f);
+			}
+			set
+			{
+				_Mysource.pitch = 1200.0f*Mathf.Log(value)/Mathf.Log(2.0f);
+			}
+		}
+		public void Play()
+		{
+			_Mysource.Play();
+		}
+		public void Stop()
+		{
+			_Mysource.Stop();
+		}
+		public string cueName
+		{
+			get{return _Mysource.cueName;}
+			set{ _Mysource.cueName = value;}
+		}
+		public bool loop
+		{
+			get{return _Mysource.loop;}
+			set{ _Mysource.loop = value;}
 		}
 	}
 
