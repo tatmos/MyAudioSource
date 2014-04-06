@@ -45,9 +45,7 @@ public class MyAudioSource : MonoBehaviour
 	}	
 }
 #else
-public class MyAudioSource : MonoBehaviour
-{	
-	public class MyAudioSource : CriAtomSource
+public class MyAudioSource : CriAtomSource
 	{	
 		public CriAtomSource source { 
 			get
@@ -77,5 +75,5 @@ public class MyAudioSource : MonoBehaviour
 			}
 		}
 	}
-}
+
 #endif		
