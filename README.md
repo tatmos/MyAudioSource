@@ -25,3 +25,5 @@ void Test()<br>
   audioSource.Play();<br>
 }<br>
 というようにスクリプトから追加するように置き換える。<br>
+<br>
+This software is released under the MIT License, see LICENSE.txt.
